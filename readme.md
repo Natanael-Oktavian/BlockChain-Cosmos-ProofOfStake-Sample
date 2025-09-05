@@ -41,6 +41,78 @@ curl https://get.ignite.com/username/natancoin@latest! | sudo bash
 ```
 `username/natancoin` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/ignite/installer).
 
+###
+Prerequisites:
+- Install go, cosmos sdk, ignite cli
+
+ignite scaffold chain natancoin --address-prefix natancoin
+
+cd natancoin    
+
+ignite chain build
+
+natancoind init mynode --chain-id natancoin-1
+
+natancoind keys add alice --keyring-backend test
+
+- address: natancoin14eztkklkglmgvqpu0uhycxmyzve99x66dpeqrv
+  name: alice
+  pubkey: '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"A8XaV/LuAg61SFnoAmng8gI4OeRFUTDABLTY4hJoTq4h"}'
+  type: local
+
+
+natancoind keys add bob --keyring-backend test
+
+- address: natancoin1cg37zemv3dezdg4geju68xwx7ly0yfwte2nz7w
+  name: bob
+  pubkey: '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"A0WEHvX+VF3BEOdOq/toIarVuuorbs4B5pkKqK6eQ+t/"}'
+  type: local
+
+
+**Important** write this mnemonic phrase in a safe place.
+It is the only way to recover your account if you ever forget your password.
+
+shaft goose lottery seat differ night neither speak retire rural ostrich couch side east general talent stock cluster timber pretty chest kiss nasty future
+
+
+natancoind genesis add-genesis-account $(natancoind keys show alice -a --keyring-backend test) 2000000000000unatancoin
+
+natancoind genesis add-genesis-account $(natancoind keys show bob -a --keyring-backend test) 500000000000unatancoin
+
+natancoind genesis gentx alice 100000000000unatancoin --chain-id natancoin-1 --keyring-backend test
+
+natancoind genesis collect-gentxs
+
+natancoind genesis validate-genesis
+
+Set minimum-gas-prices = "2000unatancoin" in .natancoin/app.toml
+Change all “stake” to “unatancoin” in .natancoint/genesis.json
+
+natancoind start    SMOKE TEST
+Check account list and address : 
+natancoind keys list --keyring-backend test
+natancoind keys show alice -a --keyring-backend test
+natancoind keys show bob -a --keyring-backend test
+
+Check balance : 
+natancoind query bank balances $(natancoind keys show alice -a --keyring-backend test) -> 1.9 M natancoin (100K used for validators/stake)
+natancoind query bank balances $(natancoind keys show bob -a --keyring-backend test) -> 500 K natancoint
+
+- Send 1K natancoin from bob to Alice (400 Natancoin fee)
+ natancoind tx bank send \
+  natancoin1cg37zemv3dezdg4geju68xwx7ly0yfwte2nz7w \
+  natancoin14eztkklkglmgvqpu0uhycxmyzve99x66dpeqrv \
+  1000000000unatancoin \
+  --fees 400000000unatancoin \
+  --keyring-backend test \
+  --chain-id natancoin-1 \
+  -y
+
+Check balance after tx : 
+natancoind query bank balances $(natancoind keys show alice -a --keyring-backend test) -> 1.901.000 natancoin (1K received from bob)
+natancoind query bank balances $(natancoind keys show bob -a --keyring-backend test) -> 498600 natancoin (burn 1.4 K (1K sent and 400 fee))
+
+
 ## Learn more
 
 - [Ignite CLI](https://ignite.com/cli)
