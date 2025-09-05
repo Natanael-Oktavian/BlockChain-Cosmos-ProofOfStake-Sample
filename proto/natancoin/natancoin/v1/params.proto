@@ -1,0 +1,13 @@
+syntax = "proto3";
+package natancoin.natancoin.v1;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "natancoin/x/natancoin/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "natancoin/x/natancoin/Params";
+  option (gogoproto.equal) = true;
+}
