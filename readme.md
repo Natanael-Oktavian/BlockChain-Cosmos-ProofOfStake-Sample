@@ -88,7 +88,9 @@ natancoind genesis validate-genesis
 Set minimum-gas-prices = "2000unatancoin" in .natancoin/app.toml
 Change all “stake” to “unatancoin” in .natancoint/genesis.json
 
-natancoind start    SMOKE TEST
+natancoind start   
+
+SMOKE TEST
 Check account list and address : 
 natancoind keys list --keyring-backend test
 natancoind keys show alice -a --keyring-backend test
