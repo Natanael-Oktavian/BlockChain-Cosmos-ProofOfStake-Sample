@@ -86,6 +86,7 @@ natancoind genesis collect-gentxs
 natancoind genesis validate-genesis
 
 Set minimum-gas-prices = "2000unatancoin" in .natancoin/app.toml
+
 Change all “stake” to “unatancoin” in .natancoint/genesis.json
 
 natancoind start   
