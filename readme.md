@@ -96,12 +96,15 @@ SMOKE TEST
 Check account list and address : 
 
 natancoind keys list --keyring-backend test
+
 natancoind keys show alice -a --keyring-backend test
+
 natancoind keys show bob -a --keyring-backend test
 
 Check balance : 
 
 natancoind query bank balances $(natancoind keys show alice -a --keyring-backend test) -> 1.9 M natancoin (100K used for validators/stake)
+
 natancoind query bank balances $(natancoind keys show bob -a --keyring-backend test) -> 500 K natancoint
 
 - Send 1K natancoin from bob to Alice (400 Natancoin fee)
@@ -118,6 +121,7 @@ natancoind query bank balances $(natancoind keys show bob -a --keyring-backend t
 Check balance after tx : 
 
 natancoind query bank balances $(natancoind keys show alice -a --keyring-backend test) -> 1.901.000 natancoin (1K received from bob)
+
 natancoind query bank balances $(natancoind keys show bob -a --keyring-backend test) -> 498600 natancoin (burn 1.4 K (1K sent and 400 fee))
 
 
