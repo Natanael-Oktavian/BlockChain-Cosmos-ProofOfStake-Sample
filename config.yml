@@ -4,24 +4,46 @@ default_denom: stake
 accounts: 
 - name: alice
   coins:
-  - 20000token
-  - 200000000stake
+  - 2000000000000unatancoin
 - name: bob
   coins:
-  - 10000token
-  - 100000000stake
+  - 500000000000unatancoin
 client:
   openapi:
     path: docs/static/openapi.json
 faucet:
   name: bob
   coins:
-  - 5token
-  - 100000stake
+  - 50000000000unatancoin
 validators:
 - name: alice
-  bonded: 100000000stake
-- name: validator1
-  bonded: 200000000stake
-- name: validator2
-  bonded: 100000000stake
+  bonded: 100000000000unatancoin
+genesis:
+  chain_id: "natancoin-1"
+  app_state:
+    staking:
+      params:
+        bond_denom: "unatancoin"
+    mint:
+      params:
+        mint_denom: "unatancoin"
+        inflation_rate_change: "0.130000000000000000"
+        inflation_max: "0.200000000000000000"
+        inflation_min: "0.070000000000000000"
+        goal_bonded: "0.670000000000000000"   # target 67% staked
+    distribution:
+      params:
+        community_tax: "0.020000000000000000"
+    gov:
+      params:
+        min_deposit:
+          - denom: "unatancoin"
+            amount: "10000000"   # 10 NCOIN
+        voting_period: "172800s"  # 48h
+    crisis:
+      constant_fee:
+        denom: "unatancoin"
+        amount: "1000000"  # 1 NCOIN
+
+init:
+  home: "$HOME/.natancoin"
