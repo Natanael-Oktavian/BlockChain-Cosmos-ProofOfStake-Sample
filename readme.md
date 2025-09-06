@@ -125,6 +125,68 @@ natancoind query bank balances $(natancoind keys show alice -a --keyring-backend
 natancoind query bank balances $(natancoind keys show bob -a --keyring-backend test) -> 498600 natancoin (burn 1.4 K (1K sent and 400 fee))
 
 
+Check Alice validator balance
+
+natancoind keys show alice --bech val -a --keyring-backend test
+
+natancoinvaloper14eztkklkglmgvqpu0uhycxmyzve99x6649ec6h
+
+Query validator info
+
+natancoind query staking validator natancoinvaloper14eztkklkglmgvqpu0uhycxmyzve99x6649ec6h -o json
+
+"tokens": "100000000000",
+ "delegator_shares": "100000000000.000000000000000000"
+
+Query Alice’s self-delegation
+
+ALICE=$(natancoind keys show alice -a --keyring-backend test)
+
+VAL=$(natancoind keys show alice --bech val -a --keyring-backend test)
+
+natancoind query staking delegation $ALICE $VAL
+
+Query rewards
+
+natancoind query distribution rewards $ALICE $VAL
+
+
+Delegate token (Bonding)
+
+natancoind tx staking delegate $VAL 5000000unatancoin \
+  --from bob \
+  --fees 400000000unatancoin \
+  --gas auto --gas-adjustment 1.4 \
+  --yes --keyring-backend test \
+  --chain-id natancoin-1
+
+Check delegation status
+
+BOB=$(natancoind keys show bob -a --keyring-backend test)
+natancoind query staking delegation $BOB $VAL
+
+Bob coin is now 498.195 Natancoin
+
+Withdraw reward
+
+natancoind tx distribution withdraw-rewards $VAL --from bob \
+  --fees 400000000unatancoin \
+  --commission=false --yes --keyring-backend test\
+  --chain-id natancoin-1
+
+
+Reset the state
+
+natancoind tendermint unsafe-reset-all --home ~/.natancoin
+
+
+Check the balance after reset
+
+natancoind query bank balances $(natancoind keys show alice -a --keyring-backend test) -> 1.9 M natancoin (100K used for validators/stake)
+
+natancoind query bank balances $(natancoind keys show bob -a --keyring-backend test) -> 500 K natancoint
+
+
 ## Learn more
 
 - [Ignite CLI](https://ignite.com/cli)
