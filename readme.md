@@ -184,7 +184,7 @@ Check the balance after reset
 
 natancoind query bank balances $(natancoind keys show alice -a --keyring-backend test) -> 1.9 M natancoin (100K used for validators/stake)
 
-natancoind query bank balances $(natancoind keys show bob -a --keyring-backend test) -> 500 K natancoint
+natancoind query bank balances $(natancoind keys show bob -a --keyring-backend test) -> 500 K natancoin
 
 
 ## Learn more
